@@ -20,9 +20,10 @@ class StockMove(models.Model):
     def _check_stock_move_operating_unit(self):
         for stock_move in self:
             ou_pick = stock_move.picking_id.operating_unit_id or False
-            ou_src = stock_move.operating_unit_id or False
+            ou_src = stock_move.picking_id.operating_unit_id or False
             ou_dest = stock_move.operating_unit_dest_id or False
             if ou_src and ou_pick and (ou_src != ou_pick) and (ou_dest != ou_pick):
+                print("ffffffffffffffffffffff",  ou_pick, ou_src, ou_dest)
                 raise UserError(
                     _(
                         "Configuration error. The Stock moves must "
