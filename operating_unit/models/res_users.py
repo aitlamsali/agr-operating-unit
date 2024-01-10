@@ -58,6 +58,14 @@ class ResUsers(models.Model):
                 else:
                     dom = []
                 user.operating_unit_ids = self.env["operating.unit"].sudo().search(dom)
+
+                default_ou = self.env["operating.unit"].sudo().search(dom, limit=1)
+
+                #print("DDDDDDDDDDDDDDD", user.default_operating_unit_id, type(user.default_operating_unit_id), default_ou, default_ou.ids[0], default_ou.ids)
+                if default_ou :
+                    user.default_operating_unit_id = default_ou.id
+                else :
+                    user.default_operating_unit_id = None
             else:
                 #user.operating_unit_ids = user.assigned_operating_unit_ids
                 if user.partner_id and user.partner_id.operating_unit_ids:
