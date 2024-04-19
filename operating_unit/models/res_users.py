@@ -47,7 +47,7 @@ class ResUsers(models.Model):
     @api.depends("groups_id", "assigned_operating_unit_ids")
     def _compute_operating_unit_ids(self):
         for user in self:
-            if user.has_group("operating_unit.group_manager_operating_unit"):
+            if user.has_group("operating_unit.group_manager_operating_unit") and not user.default_operating_unit_id: # if user.has_group("operating_unit.group_manager_operating_unit")
                 dom = []
                 if self.env.context.get("allowed_company_ids"):
                     dom = [
