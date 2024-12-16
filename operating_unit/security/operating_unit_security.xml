@@ -29,9 +29,9 @@
         <field name="model_id" ref="model_operating_unit" />
         <field name="domain_force">[('id','in',user.operating_unit_ids.ids)]</field>
         <field name="name">Allowed operating units</field>
-        <field eval="0" name="perm_unlink" />
+        <field eval="1" name="perm_unlink" />
         <field eval="0" name="perm_write" />
-        <field eval="1" name="perm_read" />
+        <field eval="0" name="perm_read" />
         <field eval="0" name="perm_create" />
     </record>
 </odoo>

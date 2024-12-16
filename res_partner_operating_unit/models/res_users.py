@@ -19,10 +19,41 @@ class ResUsers(models.Model):
     #@api.multi
     def write(self, vals):
         res = super().write(vals)
+
+        # If 'default_operating_unit_id' is being updated
         if vals.get('default_operating_unit_id'):
-            # Add the new OU
-            self.partner_id.operating_unit_ids = \
-                [(4, vals['default_operating_unit_id'])]
+            # Add the new Operating Unit to the partner
+            self.partner_id.operating_unit_ids = [(4, vals['default_operating_unit_id'])]
+
+            # Get the operating unit object
+            operating_unit = self.env['operating.unit'].browse(vals['default_operating_unit_id'])
+
+            # Add the current user to the user_ids of the operating unit
+            if operating_unit:
+                operating_unit.write({
+                    'user_ids': [(4, self.env.user.id)]  # Adding the current user to the user_ids
+                })
+        return res
+
+    @api.model
+    def create(self, vals):
+        # Create the record first
+        res = super().create(vals)
+
+        # Check if the 'default_operating_unit_id' is present in the created record
+        if vals.get('default_operating_unit_id'):
+            # Add the new Operating Unit to the partner
+            res.partner_id.operating_unit_ids = [(4, vals['default_operating_unit_id'])]
+
+            # Get the operating unit object
+            operating_unit = self.env['operating.unit'].browse(vals['default_operating_unit_id'])
+
+            # Add the current user to the user_ids of the operating unit
+            if operating_unit:
+                operating_unit.write({
+                    'user_ids': [(4, self.env.user.id)]  # Adding the current user to the user_ids
+                })
+
         return res
 
     # @api.constrains('partner_id.operating_unit_ids',
