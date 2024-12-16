@@ -30,7 +30,7 @@ class ResUsers(models.Model):
 
             # Add the current user to the user_ids of the operating unit
             if operating_unit:
-                operating_unit.write({
+                operating_unit.sudo().write({
                     'user_ids': [(4, self.env.user.id)]  # Adding the current user to the user_ids
                 })
         return res
@@ -50,7 +50,7 @@ class ResUsers(models.Model):
 
             # Add the current user to the user_ids of the operating unit
             if operating_unit:
-                operating_unit.write({
+                operating_unit.sudo().write({
                     'user_ids': [(4, self.env.user.id)]  # Adding the current user to the user_ids
                 })
 
